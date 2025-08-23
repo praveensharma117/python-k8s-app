@@ -1,15 +1,13 @@
-# Use lightweight Python image
-FROM python:3.9-slim
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
 WORKDIR /app
-
-# Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app
 COPY app.py .
+EXPOSE 8000
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]
 
-EXPOSE 5000
-
-CMD ["python", "app.py"]

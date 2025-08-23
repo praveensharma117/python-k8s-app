@@ -1,0 +1,20 @@
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: python-k8s-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: python.local   # change to your domain or add in /etc/hosts
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: python-k8s-app   # must match 'kubectl get svc' NAME
+            port:
+              number: 80
+
